@@ -148,16 +148,19 @@ VNode* DESPOT::ConstructTree(vector<State*>& particles, RandomStreams& streams,
 	double used_time = 0;
 	int num_trials = 0;
 	do {
+		// root->PrintTree();
 		double start = clock();
 		VNode* cur = Trial(root, streams, lower_bound, upper_bound, model, history, statistics);
 		used_time += double(clock() - start) / CLOCKS_PER_SEC;
-
+		// root->PrintTree();
 		start = clock();
 		Backup(cur);
 		if (statistics != NULL) {
 			statistics->time_backup += double(clock() - start) / CLOCKS_PER_SEC;
 		}
 		used_time += double(clock() - start) / CLOCKS_PER_SEC;
+		// logd << "[ConstructTree] Printing tree\n";
+		// root->PrintTree();
 
 		num_trials++;
 	} while (used_time * (num_trials + 1.0) / num_trials < timeout
@@ -464,6 +467,8 @@ ValuedAction DESPOT::OptimalAction(VNode* vnode) {
 	ValuedAction astar(-1, Globals::NEG_INFTY);
 	for (ACT_TYPE action = 0; action < vnode->children().size(); action++) {
 		QNode* qnode = vnode->Child(action);
+		logi << "Children of root node: action: " << qnode->edge() << "  lowerbound: "
+			 << qnode->lower_bound() << endl;
 		if (qnode->lower_bound() > astar.value) {
 			astar = ValuedAction(action, qnode->lower_bound());
 		}
@@ -472,6 +477,10 @@ ValuedAction DESPOT::OptimalAction(VNode* vnode) {
 	if (vnode->default_move().value > astar.value) {
 		astar = vnode->default_move();
 	}
+
+	logd << "Default action: " << vnode->default_move().action << " value: " << vnode->default_move().value << endl;
+
+	logd << ">> Optimal action: " << astar.action << " value: " << astar.value << endl;
 
 	return astar;
 }

@@ -252,6 +252,9 @@ bool Logger::SummarizeStep(int step, int round, bool terminal, ACT_TYPE action,
 			model_->PrintState(*state_, *out_);
 		}
 	}
+	else {
+		*out_ << "[ERROR]: STATE IS NULL\n";
+	}
 
 	if (!Globals::config.silence && out_ && state_ != NULL) {
 		*out_ << "- Observation = ";

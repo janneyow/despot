@@ -101,9 +101,12 @@ void ParticleBelief::Update(ACT_TYPE action, OBS_TYPE obs) {
 	// Update particles
 	for (int i = 0; i <particles_.size(); i++) {
 		State* particle = particles_[i];
+
+		// logd << "Before Step: Particle " << i << ": " << *particle << endl; 
 		bool terminal = model_->Step(*particle, Random::RANDOM.NextDouble(),
 			action, reward, o);
 		double prob = model_->ObsProb(obs, *particle, action);
+		// logd << "After Step: Particle " << i << ": " << *particle << endl; 
 
 		if (!terminal && prob) { // Terminal state is not required to be explicitly represented and may not have any observation
 			particle->weight *= prob;
