@@ -4,3 +4,9 @@ build/
 # Ignore logs
 logs
 *.log
+
+# Ignore deps
+.deps/
+*.deps
+*.de
+*.d
