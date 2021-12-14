@@ -159,7 +159,7 @@ VNode* DESPOT::ConstructTree(vector<State*>& particles, RandomStreams& streams,
 			statistics->time_backup += double(clock() - start) / CLOCKS_PER_SEC;
 		}
 		used_time += double(clock() - start) / CLOCKS_PER_SEC;
-		// logd << "[ConstructTree] Printing tree\n";
+		logd << "[ConstructTree] Printing tree\n";
 		// root->PrintTree();
 
 		num_trials++;
@@ -224,7 +224,7 @@ void DESPOT::InitBounds(VNode* vnode, ScenarioLowerBound* lower_bound,
 }
 
 ValuedAction DESPOT::Search() {
-	if (logging::level() >= logging::DEBUG) {
+	if (logging::level() >= logging::INFO) {
 		model_->PrintBelief(*belief_);
 	}
 
